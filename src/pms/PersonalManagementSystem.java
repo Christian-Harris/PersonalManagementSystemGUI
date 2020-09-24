@@ -25,7 +25,7 @@ public class PersonalManagementSystem extends Application{
 				System.out.print(ex.getUsername());
 		}
 		
-		BorderPane borderPane = new BorderPane(new MainMenu());
+		BorderPane borderPane = new BorderPane(new NewUserMenu());
 		borderPane.setStyle("-fx-background-color: black");
 		Scene loginScene = new Scene(borderPane, 400, 400);
 		
