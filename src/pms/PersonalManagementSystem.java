@@ -1,10 +1,11 @@
 package pms;
 
-import user.User;
-import myExceptions.*;
-import menu.*;
+//import user.User;
+//import myExceptions.*;
+//import menu.*;
+import calendar.Calendar;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -17,26 +18,38 @@ import javafx.scene.paint.*;
 
 public class PersonalManagementSystem extends Application{
 	@Override
-	public void start(Stage stage){
-		//Temporarily hard coded admin user.
-		try{
-			this.addUser("Admin", "password");
-		}catch(UserAlreadyExistsException ex){
-				System.out.print(ex.getUsername());
-		}
+	public void start(Stage primaryStage){
 		
-		BorderPane borderPane = new BorderPane(new NewUserMenu());
-		borderPane.setStyle("-fx-background-color: black");
-		Scene loginScene = new Scene(borderPane, 400, 400);
+		//BorderPane borderPane = new BorderPane();
+		//borderPane.setStyle("-fx-background-color: black");
+		Scene loginScene = new Scene(new Calendar(), 400, 325);
 		
-		stage.setTitle("Personal Management System");
-		//primaryStage.setMaximized(true);
-		stage.setScene(loginScene);
-		stage.show();
+		primaryStage.setTitle("Personal Management System");
+		primaryStage.setMinWidth(300);
+		primaryStage.setMinHeight(300);
+		primaryStage.setScene(loginScene);
+		primaryStage.show();
 	}
 	
-	ArrayList<User> users= new ArrayList<User>();
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*
 	private void addUser(User user) throws UserAlreadyExistsException{
 		if(!userExists(user.getUsername())){
 			this.users.add(user);
@@ -62,5 +75,5 @@ public class PersonalManagementSystem extends Application{
 			}
 		}
 		return false;
-	}
+	}*/
 }
