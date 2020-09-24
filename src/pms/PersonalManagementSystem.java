@@ -16,26 +16,13 @@ import javafx.geometry.Rectangle2D;
 public class PersonalManagementSystem extends Application{
 	@Override
 	public void start(Stage primaryStage){
-		//Pane pane = new Pane();
+		Pane pane = new Pane();
 		
-		//Text text = new Text(50, 50, "Personal Management System");
-		
-		//pane.getChildren().add(text);
-		
-		//Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-		
-		//Scene scene = new Scene(pane, primaryScreenBounds.getWidth() + 200, primaryScreenBounds.getHeight() + 200);
-		//Scene scene = new Scene(pane, 20, 20);
-
-		//set Stage boundaries to visible bounds of the main screen
-		//primaryStage.setX(primaryScreenBounds.getMinX());
-		//primaryStage.setY(primaryScreenBounds.getMinY());
-		//primaryStage.setWidth(primaryScreenBounds.getWidth());
-		//primaryStage.setHeight(primaryScreenBounds.getHeight());
+		Scene scene = new Scene(pane);
 		
 		primaryStage.setTitle("Personal Management System");
-		primaryStage.setFullScreen(true);
-		//primaryStage.setScene(scene);
+		primaryStage.setMaximized(true);
+		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
 	
