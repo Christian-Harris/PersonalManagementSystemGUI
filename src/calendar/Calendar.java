@@ -7,11 +7,16 @@ import javafx.geometry.Pos;
 import java.time.*;
 
 public class Calendar extends BorderPane{
-	GridPane calendar = new GridPane();
-	CalendarToolbar toolbar = new CalendarToolbar();
+	private GridPane calendar = new GridPane();
+	private CalendarNavigation navBar = new CalendarNavigation();
+	private YearMonth current = YearMonth.now();
+	//YearMonth view = YearMonth.now();
+	private YearMonth view = current.plusMonths(1);
 	
 	public Calendar(){
-		LocalDate firstOfMonth = LocalDate.of(YearMonth.now().getYear(), YearMonth.now().getMonth(), 1);
+		int year = view.getYear();
+		Month month = view.getMonth();
+		LocalDate firstOfMonth = LocalDate.of(year, month, 1);
 		int firstDayOfCurrentMonth = firstOfMonth.getDayOfWeek().getValue(); //Monday = 1, Tuesday = 2, ..., Sunday = 7
 		
 		Label[] daysOfWeek = {new Label("Sunday"), new Label("Monday"), new Label("Tuesday"), new Label("Wednesday"), new Label("Thursday"), new Label("Friday"), new Label("Saturday")};		
@@ -25,7 +30,7 @@ public class Calendar extends BorderPane{
 		}
 		
 		for(int i = 1; i <= firstOfMonth.lengthOfMonth(); i++){
-			Day day = new Day(i);
+			Day day = new Day(LocalDate.of(year, month, i));
 			day.setPrefSize(100, 100);
 			day.setMinSize(24, 24);
 			day.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -37,28 +42,24 @@ public class Calendar extends BorderPane{
 		
 		BorderPane.setAlignment(calendar, Pos.CENTER);
 		calendar.setAlignment(Pos.CENTER);
-		//calendar.setGridLinesVisible(true);
 		this.setCenter(calendar);
-		this.setTop(toolbar);
+		this.setTop(navBar);
 	}
 	
 	class Day extends VBox{
-		//private LocalDate date;
-		private Label dayNumber;
+		private LocalDate date;
 		
-		Day(int day){
-			dayNumber = new Label(Integer.toString(day));
-			//thid.date = date;
-			//this.setStyle("-fx-border-color: black; -fx-border-width: 1");
-			this.getChildren().add(dayNumber);
+		Day(LocalDate date){
+			this.date = date;
+			this.getChildren().add(new Label(Integer.toString(date.getDayOfMonth())));
 		}
 	}
 	
-	class CalendarToolbar extends HBox{
+	class CalendarNavigation extends HBox{
 		Button next = new Button("->");
 		Button previous = new Button("<-");
 		
-		CalendarToolbar(){
+		CalendarNavigation(){
 			next.setPrefSize(36, 24);
 			next.setMinSize(36, 24);
 			next.setMaxSize(36, 24);
