@@ -34,6 +34,7 @@ public class PersonalManagementSystem extends Application{
 		TextField password = new TextField();
 		Label usernameLabel = new Label("Username: ");
 		Label passwordLabel = new Label("Password: ");
+		Label login = new Label("LOGIN");
 		
 		loginMenu(){
 			//super(8);
@@ -53,10 +54,11 @@ public class PersonalManagementSystem extends Application{
 			username.setPromptText("Username");
 			password.setPromptText("Password");
 			
-			this.add(usernameLabel, 0, 0);
-			this.add(passwordLabel, 0, 1);
-			this.add(username, 1, 0);
-			this.add(password, 1, 1);
+			this.add(login, 0, 0);
+			this.add(usernameLabel, 0, 1);
+			this.add(passwordLabel, 0, 2);
+			this.add(username, 1, 1);
+			this.add(password, 1, 2);
 			//this.getChildren().addAll(username, password);
 		}
 	}
