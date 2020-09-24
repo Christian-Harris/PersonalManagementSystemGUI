@@ -4,7 +4,7 @@ import event.Event;
 
 import java.util.ArrayList;
 
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.TilePane;
 
 public class Calendar extends TilePane{
 	private ArrayList<Event> events;
