@@ -60,9 +60,7 @@ public class Calendar extends BorderPane{
 		calendar.getChildren().clear();
 		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy");
-		String text = view.format(formatter);
-		
-		calendar.add(new Label(text), 0, 0, 7, 1);
+		calendar.add(new Label(view.format(formatter)), 0, 0, 7, 1);
 		
 		for(int i = 0; i < 7; i++){
 			daysOfWeek[i].setPrefSize(100, 24);
@@ -111,7 +109,7 @@ public class Calendar extends BorderPane{
 				public void handle(ActionEvent e){
 					Stage eventStage = new Stage();
 					EventBuilderMenu ebm = new EventBuilderMenu(date, calendar);
-					Scene scene = new Scene(ebm, 500, 500);
+					Scene scene = new Scene(ebm, 1000, 300);
 					eventStage.setTitle("Event Builder");
 					eventStage.setMinWidth(300);
 					eventStage.setMinHeight(300);
