@@ -1,11 +1,15 @@
 package calendar;
 
+import menu.EventBuilderMenu;
+
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
-import javafx.geometry.Pos;
+import javafx.geometry.*;
 import javafx.event.*;
 import javafx.scene.input.*;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -30,6 +34,19 @@ public class Calendar extends BorderPane{
 		eventSummary.setWrappingWidth(100);
 		
 		events = new ArrayList<Event>();
+		
+		this.setOnScroll(new EventHandler<ScrollEvent>(){
+			public void handle(ScrollEvent e){
+				if(e.getDeltaY() < 0){
+					view = view.plusMonths(1);
+					((Calendar)e.getSource()).paintCalendar();
+				}
+				else{
+					view = view.minusMonths(1);
+					((Calendar)e.getSource()).paintCalendar();
+				}
+			}
+		});
 		
 		this.paintCalendar();
 	}
@@ -81,10 +98,28 @@ public class Calendar extends BorderPane{
 	
 	class Day extends VBox{
 		private LocalDate date;
+		private ContextMenu contextMenu;
+		private MenuItem newEvent;
 		
 		Day(LocalDate date, Calendar calendar){
 			this.date = date;
 			this.getChildren().add(new Label(Integer.toString(date.getDayOfMonth())));
+			
+			contextMenu = new ContextMenu();
+			newEvent = new MenuItem("New Event");
+			newEvent.setOnAction(new EventHandler<ActionEvent>(){
+				public void handle(ActionEvent e){
+					Stage eventStage = new Stage();
+					EventBuilderMenu ebm = new EventBuilderMenu(date, calendar);
+					Scene scene = new Scene(ebm, 500, 500);
+					eventStage.setTitle("Event Builder");
+					eventStage.setMinWidth(300);
+					eventStage.setMinHeight(300);
+					eventStage.setScene(scene);
+					eventStage.show();
+				}
+			});
+			contextMenu.getItems().addAll(newEvent);
 			
 			this.setOnMouseEntered(new EventHandler<MouseEvent>(){
 				public void handle(MouseEvent e){
@@ -110,9 +145,15 @@ public class Calendar extends BorderPane{
 			
 			this.setOnMouseClicked(new EventHandler<MouseEvent>(){
 				public void handle(MouseEvent e){
-					
+					if(e.getButton() == MouseButton.SECONDARY){
+						contextMenu.show((Day)e.getSource(), Side.BOTTOM, 0, 0);
+					}						
 				}
 			});
+		}
+		
+		public LocalDate getDate(){
+			return this.date;
 		}
 	}
 	

@@ -19,7 +19,8 @@ import javafx.scene.paint.*;
 public class PersonalManagementSystem extends Application{
 	@Override
 	public void start(Stage primaryStage){
-		Scene scene = new Scene(new Calendar()), 400, 325);
+		Calendar calendar = new Calendar();
+		Scene scene = new Scene(calendar, 800, 600);
 		
 		primaryStage.setTitle("Personal Management System");
 		primaryStage.setMinWidth(300);
