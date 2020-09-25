@@ -9,6 +9,7 @@ import javafx.scene.text.Text;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class Calendar extends BorderPane{
 	private GridPane calendar;
@@ -18,6 +19,8 @@ public class Calendar extends BorderPane{
 	private static Label[] daysOfWeek = {new Label("Sunday"), new Label("Monday"), new Label("Tuesday"), new Label("Wednesday"), new Label("Thursday"), new Label("Friday"), new Label("Saturday")};
 	private Text eventSummary;
 	
+	ArrayList<Event> events;
+	
 	public Calendar(){
 		calendar = new GridPane();
 		navBar = new CalendarNavigation(this);
@@ -25,6 +28,9 @@ public class Calendar extends BorderPane{
 		view = current;
 		eventSummary = new Text("\n\nEvents");
 		eventSummary.setWrappingWidth(100);
+		
+		events = new ArrayList<Event>();
+		
 		this.paintCalendar();
 	}
 	
