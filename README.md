@@ -6,7 +6,7 @@ This project allowed me to build a GUI on top of a previous project which I call
 
 ## How to Run
 Explain what files are needed to run and which file to run. It is also helpful to include a screenshot of the program running. Make sure image is in your repository.
-[Application](PMS Running.png)
+![Application](https://github.com/Christian-Harris/PersonalManagementSystemGUI/blob/master/PMS%20Running.png)
 
 ## Code Example
 The following code is an algorithm for determining if a given event object is on a particular day. In particulr this algorithm accounts for the events repetition and
