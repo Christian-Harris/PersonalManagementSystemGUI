@@ -9,6 +9,7 @@ import javafx.event.*;
 import javafx.stage.Stage;
 import javafx.scene.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Text;
 
 import java.time.*;
 import java.time.format.*;
@@ -132,16 +133,16 @@ public class EventBuilderMenu extends GridPane{
 	
 	private void paintEventBuilderMenu(){
 		this.getChildren().clear();
-		this.add(toolbar, 0, 0);
+		this.add(toolbar, 0, 0, 7, 1);
 		
 		this.add(new Label("Name: "), 0, 1);
-		this.add(name, 1, 1);
+		this.add(name, 1, 1, 3, 1);
 		
 		this.add(new Label("Location: "), 0, 2);
-		this.add(location, 1, 2);
+		this.add(location, 1, 2, 3, 1);
 		
 		this.add(new Label("Date: "), 0, 3);
-		this.add(date, 1, 3);
+		this.add(date, 1, 3, 3, 1);
 		
 		this.add(new Label("Start Time: "), 0, 4);
 		this.add(startTimeHour, 1, 4);
@@ -160,13 +161,13 @@ public class EventBuilderMenu extends GridPane{
 		this.add(repeats, 4, 1);
 		
 		this.add(new Label("Start Date: "), 4, 2);
-		this.add(startDate, 5, 2);
+		this.add(startDate, 5, 2, 7, 1);
 		
 		this.add(new Label("End Date: "), 4, 3);
-		this.add(endDate, 5, 3);
+		this.add(endDate, 5, 3, 7, 1);
 		
 		this.add(new Label("Weeks to Repeat"), 4, 4);
-		this.add(weeksOfRepition, 5, 4);
+		this.add(weeksOfRepition, 5, 4, 7, 1);
 		for(int i = 0; i < weeksOfRepition.getValue(); i++){
 			this.add(new Label("Week " + (i + 1)), 4, 5 + i);
 			this.add(new RepeatDay("Su"), 5, 5 + i);
@@ -182,6 +183,7 @@ public class EventBuilderMenu extends GridPane{
 	class EventBuilderToolbar extends HBox{
 		Button back;
 		Button create;
+		Text errorMessage;
 		
 		public EventBuilderToolbar(Calendar calendar){
 			back = new Button("<-");
@@ -194,6 +196,11 @@ public class EventBuilderMenu extends GridPane{
 			create = new Button("Create Event");
 			create.setOnAction(new EventHandler<ActionEvent>(){
 				public void handle(ActionEvent e){
+					errorMessage.setText("");
+					if(name.getText().equals(""))
+					{
+						name.setText("Default Name");
+					}
 					try{
 						LocalDate eventDate = LocalDate.parse(date.getText(), formatter);
 						LocalTime eventStartTime;
@@ -216,7 +223,6 @@ public class EventBuilderMenu extends GridPane{
 						if(eventStartTime.compareTo(eventEndTime) > 0){
 							throw new DateTimeException("End time is before start time.");
 						}
-						
 						if(repeats.isSelected()){
 							eventStartDate = LocalDate.parse(startDate.getText(), formatter);
 							eventEndDate = LocalDate.parse(endDate.getText(), formatter);
@@ -242,14 +248,20 @@ public class EventBuilderMenu extends GridPane{
 							((Stage)((Button)e.getSource()).getScene().getWindow()).close();
 						}	
 					}catch(DateTimeParseException ex){
-						System.out.println("Invalid date string");
+						errorMessage.setText("Invalid date");
 					}
 					catch(DateTimeException ex){
-						System.out.println("Invalid time fields");
+						errorMessage.setText("Invalid time/date");
 					}
 				}
 			});
-			this.getChildren().addAll(back, create);
+			
+			errorMessage = new Text("");
+			errorMessage.setStyle("-fx-fill: red");
+			
+			this.setSpacing(6);
+			
+			this.getChildren().addAll(back, create, errorMessage);
 		}
 	}
 	
@@ -270,6 +282,7 @@ public class EventBuilderMenu extends GridPane{
 					}
 				}
 			});
+			this.setMinSize(25, 25);
 		}
 		
 		public boolean isSelected(){
