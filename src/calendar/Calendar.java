@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Calendar extends BorderPane{
 	private GridPane calendar;
@@ -23,7 +24,7 @@ public class Calendar extends BorderPane{
 	private YearMonth current;
 	private YearMonth view;
 	private static Label[] daysOfWeek = {new Label("Sunday"), new Label("Monday"), new Label("Tuesday"), new Label("Wednesday"), new Label("Thursday"), new Label("Friday"), new Label("Saturday")};
-	private Text eventSummary;
+	private VBox eventSummary;
 	
 	ArrayList<Event> events;
 	
@@ -32,8 +33,9 @@ public class Calendar extends BorderPane{
 		navBar = new CalendarNavigation(this);
 		current = YearMonth.now();
 		view = current;
-		eventSummary = new Text("\n\nEvents\n");
-		eventSummary.setWrappingWidth(100);
+		eventSummary = new VBox(2);
+		eventSummary.setMinWidth(100);
+		eventSummary.getChildren().add(new Label("Events"));
 		
 		events = new ArrayList<Event>();
 		
@@ -100,6 +102,14 @@ public class Calendar extends BorderPane{
 		events.add(event);
 	}
 	
+	public void deleteEvent(UUID ID){
+		for(int i = 0; i < events.size(); i++){
+			if(events.get(i).getID().equals(ID)){
+				events.remove(i);
+			}
+		}
+	}
+	
 	public ArrayList<Event> getEvents(){
 		return this.events;
 	}
@@ -162,10 +172,11 @@ public class Calendar extends BorderPane{
 						contextMenu.show((Day)e.getSource(), Side.BOTTOM, 0, 0);
 					}
 					else if(e.getButton() == MouseButton.PRIMARY){
-						eventSummary.setText("\n\nEvents\n");
+						eventSummary.getChildren().clear();
+						eventSummary.getChildren().add(new Label("Events"));
 						for(int i = 0; i < events.size(); i++){
 							if(((Day)e.getSource()).eventIsOn(events.get(i))){
-								eventSummary.setText(eventSummary.getText() + events.get(i).summary());
+								eventSummary.getChildren().add(new summaryItem(events.get(i), calendar));
 							}
 						}
 						calendar.paintCalendar();
@@ -195,6 +206,34 @@ public class Calendar extends BorderPane{
 				}				
 			}
 			return false;
+		}
+	}
+	
+	class summaryItem extends Text{
+		private UUID ID;
+		private ContextMenu contextMenu;
+		private MenuItem deleteEvent;
+		
+		summaryItem(Event event, Calendar calendar){
+			super(event.summary());
+			ID = event.getID();
+			contextMenu = new ContextMenu();
+			deleteEvent = new MenuItem("Delete");
+			deleteEvent.setOnAction(new EventHandler<ActionEvent>(){
+				public void handle(ActionEvent e){
+					calendar.deleteEvent(ID);
+					calendar.paintCalendar();
+				}
+			});
+			contextMenu.getItems().addAll(deleteEvent);
+			
+			this.setOnMouseClicked(new EventHandler<MouseEvent>(){
+				public void handle(MouseEvent e){
+					if(e.getButton() == MouseButton.SECONDARY){
+						contextMenu.show((summaryItem)e.getSource(), Side.BOTTOM, 0, 0);
+					}
+				}
+			});
 		}
 	}
 	

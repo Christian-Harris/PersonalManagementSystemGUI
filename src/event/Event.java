@@ -51,7 +51,7 @@ public class Event{
 	
 	public LocalDate getDate(){
 		return this.date;
-	}
+	} 
 	
 	public LocalDate getStartDate(){
 		return this.startDate;
@@ -72,5 +72,9 @@ public class Event{
 	
 	public boolean getMaskValue(int row, int column){
 		return repetitionMask[row][column];
+	}
+	
+	public UUID getID(){
+		return this.ID;
 	}
 }
