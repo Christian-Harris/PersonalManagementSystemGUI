@@ -5,7 +5,7 @@
 This project allowed me to build a GUI on top of a previous project which I called a personal management system.
 
 ## How to Run
-Explain what files are needed to run and which file to run. It is also helpful to include a screenshot of the program running. Make sure image is in your repository.
+The class files located in the bin directory are required. Place them on a drive and navigate to them in a command window. Once there run the command java pms.PersonalManagementSystem.
 ![Application](https://github.com/Christian-Harris/PersonalManagementSystemGUI/blob/master/PMS%20Running.png)
 
 ## Code Example
