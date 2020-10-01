@@ -130,6 +130,8 @@ public class Event{
 	
 	/**
 	*	This method returns the mask value of repetitionMask at index (row, column);
+	*	@param row - the row index of the mask value to retrieve.
+	*	@param column - the column index of the mask value to retrieve.
 	*	@return the mask value of repetitionMask at index (row, column);
 	*/
 	public boolean getMaskValue(int row, int column){

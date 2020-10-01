@@ -113,13 +113,15 @@ public class Calendar extends BorderPane{
 	
 	/**
 	*	This method event to the ArrayList events.
+	*	@param event - the event to be added to events.
 	*/
 	public void addEvent(Event event){
 		events.add(event);
 	}
 	
 	/**
-	* This method removes an event from the ArrayList events based on the unique UUID.
+	*	This method removes an event from the ArrayList events based on the unique UUID.
+	*	@param ID - the ID of the event to delete from events.
 	*/
 	public void deleteEvent(UUID ID){
 		for(int i = 0; i < events.size(); i++){
