@@ -15,6 +15,13 @@ import java.time.*;
 import java.time.format.*;
 import java.util.Arrays;
 
+/**
+ * <h2>EventBuilderMenu</h2>
+ * <p>This class implements an event builder menu to allow users to built events.</p>
+ * <p>Created on 1 October 2020</p>
+ * @author Christian Harris
+ */
+ 
 public class EventBuilderMenu extends GridPane{
 	private TextField name;
 	private TextField location;
@@ -33,6 +40,12 @@ public class EventBuilderMenu extends GridPane{
 	private EventBuilderToolbar toolbar;
 	private Button create;
 	private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+	
+	/**
+	*	Constructs an event builder menu.
+	*	@param selectedDate - the date that is selected when entering the menu.
+	*	@param calendar - the calendar object which this builder belongs to.
+	*/
 	
 	public EventBuilderMenu(LocalDate selectedDate, Calendar calendar){
 		name = new TextField();
@@ -131,6 +144,7 @@ public class EventBuilderMenu extends GridPane{
 		this.paintEventBuilderMenu();
 	}
 	
+	//This method redraws the event builder menu. This is called anytime the window needs to be refreshed.
 	private void paintEventBuilderMenu(){
 		this.getChildren().clear();
 		this.add(toolbar, 0, 0, 7, 1);
@@ -180,12 +194,13 @@ public class EventBuilderMenu extends GridPane{
 		}
 	}
 	
-	class EventBuilderToolbar extends HBox{
+	//This is a helper class defining the toolbar for the event builder menu.
+	private class EventBuilderToolbar extends HBox{
 		Button back;
 		Button create;
 		Text errorMessage;
 		
-		public EventBuilderToolbar(Calendar calendar){
+		private EventBuilderToolbar(Calendar calendar){
 			back = new Button("<-");
 			back.setOnAction(new EventHandler<ActionEvent>(){
 				public void handle(ActionEvent e){
@@ -265,7 +280,8 @@ public class EventBuilderMenu extends GridPane{
 		}
 	}
 	
-	class RepeatDay extends Label{
+	//This is a helper class used in displaying the days on the calendar.
+	private class RepeatDay extends Label{
 		private boolean selected;
 		public RepeatDay(String text){
 			super(text);
@@ -285,11 +301,12 @@ public class EventBuilderMenu extends GridPane{
 			this.setMinSize(25, 25);
 		}
 		
-		public boolean isSelected(){
+		private boolean isSelected(){
 			return this.selected;
 		}
 	}
 	
+	//This is a helper method for retrieving the nodes which define the repeat schedule for an event.
 	private Node getNode(int col, int row) {
     for (Node node : this.getChildren()) {
         if (this.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {

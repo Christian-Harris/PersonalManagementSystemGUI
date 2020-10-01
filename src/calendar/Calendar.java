@@ -18,6 +18,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.UUID;
 
+/**
+ * <h2>Calendar</h2>
+ * <p>This class implements a calendar object which displays in a window. The calendar stores an ArrayList of Event objects.</p>
+ * <p>Created on 1 October 2020</p>
+ * @author Christian Harris
+ */
+ 
 public class Calendar extends BorderPane{
 	private GridPane calendar;
 	private CalendarNavigation navBar;
@@ -26,8 +33,11 @@ public class Calendar extends BorderPane{
 	private static Label[] daysOfWeek = {new Label("Sunday"), new Label("Monday"), new Label("Tuesday"), new Label("Wednesday"), new Label("Thursday"), new Label("Friday"), new Label("Saturday")};
 	private VBox eventSummary;
 	
-	ArrayList<Event> events;
+	private ArrayList<Event> events;
 	
+	/**
+	*	Constructs a calendar object and displays the current month according to the system date.
+	*/
 	public Calendar(){
 		calendar = new GridPane();
 		navBar = new CalendarNavigation(this);
@@ -55,6 +65,9 @@ public class Calendar extends BorderPane{
 		this.paintCalendar();
 	}
 	
+	/**
+	*	This method redraws the calendar and is called from other classes whenever the view needs to be updated.
+	*/
 	public void paintCalendar(){
 		int year = view.getYear();
 		Month month = view.getMonth();
@@ -98,10 +111,16 @@ public class Calendar extends BorderPane{
 		this.setTop(navBar);
 	}
 	
+	/**
+	*	This method event to the ArrayList events.
+	*/
 	public void addEvent(Event event){
 		events.add(event);
 	}
 	
+	/**
+	* This method removes an event from the ArrayList events based on the unique UUID.
+	*/
 	public void deleteEvent(UUID ID){
 		for(int i = 0; i < events.size(); i++){
 			if(events.get(i).getID().equals(ID)){
@@ -110,11 +129,16 @@ public class Calendar extends BorderPane{
 		}
 	}
 	
+	/**
+	*	This method returns a reference to the ArrayList events.
+	*	@return events.
+	*/
 	public ArrayList<Event> getEvents(){
 		return this.events;
 	}
 	
-	class Day extends VBox{
+	//This is a helper class defining a Day object to be displayed on the calendar.
+	private class Day extends VBox{
 		private LocalDate date;
 		private ContextMenu contextMenu;
 		private MenuItem newEvent;
@@ -209,7 +233,8 @@ public class Calendar extends BorderPane{
 		}
 	}
 	
-	class summaryItem extends Text{
+	//This is a helper class defining a summaryItem object to be displayed in the calendar.
+	private class summaryItem extends Text{
 		private UUID ID;
 		private ContextMenu contextMenu;
 		private MenuItem deleteEvent;
@@ -237,7 +262,8 @@ public class Calendar extends BorderPane{
 		}
 	}
 	
-	class CalendarNavigation extends HBox{
+	//This is a helper class defining a navigation toolbar for the calendar.
+	private class CalendarNavigation extends HBox{
 		Button next = new Button("->");
 		Button previous = new Button("<-");
 		Button today = new Button("Today");

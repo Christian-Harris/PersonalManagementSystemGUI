@@ -16,8 +16,19 @@ import javafx.scene.control.*;
 import javafx.geometry.*;
 import javafx.scene.paint.*;
 
+/**
+ * <h2>PersonalManagementSystem</h2>
+ * <p>This class drives the PersonalManagementSystem application.</p>
+ * <p>Created on 1 October 2020</p>
+ * @author Christian Harris
+ */
+
 public class PersonalManagementSystem extends Application{
 	@Override
+	/**
+	*	This start method begins the application by creating a Calendar object and placing it in a scene. That scene is then added to the primary stage and shown
+	*	successfully beginning the application.
+	*/
 	public void start(Stage primaryStage){
 		Calendar calendar = new Calendar();
 		Scene scene = new Scene(calendar, 800, 600);
