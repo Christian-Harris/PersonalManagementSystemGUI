@@ -125,7 +125,7 @@ public class EventBuilderMenu extends GridPane{
 		
 		create = new Button("Create");
 		
-		toolbar = new EventBuilderToolbar();
+		toolbar = new EventBuilderToolbar(calendar);
 		
 		this.paintEventBuilderMenu();
 	}
@@ -183,7 +183,7 @@ public class EventBuilderMenu extends GridPane{
 		Button back;
 		Button create;
 		
-		public EventBuilderToolbar(){
+		public EventBuilderToolbar(Calendar calendar){
 			back = new Button("<-");
 			back.setOnAction(new EventHandler<ActionEvent>(){
 				public void handle(ActionEvent e){
@@ -231,15 +231,16 @@ public class EventBuilderMenu extends GridPane{
 								}
 							}
 						}
-						
 						if(!repeats.isSelected()){
-							Event myEvent = new Event(name.getText(), eventDate, eventStartTime, eventEndTime, description.getText(), location.getText(), false);
+							calendar.addEvent(new Event(name.getText(), eventDate, eventStartTime, eventEndTime, description.getText(), location.getText(), false));
+							calendar.paintCalendar();
 							((Stage)((Button)e.getSource()).getScene().getWindow()).close();
 						}
 						else{
-							Event myEvent = new Event(name.getText(), eventDate, eventStartTime, eventEndTime, description.getText(), location.getText(), true, eventStartDate, eventEndDate, repetitionMask);
+							calendar.addEvent(new Event(name.getText(), eventDate, eventStartTime, eventEndTime, description.getText(), location.getText(), true, eventStartDate, eventEndDate, repetitionMask));
+							calendar.paintCalendar();
 							((Stage)((Button)e.getSource()).getScene().getWindow()).close();
-						}
+						}	
 					}catch(DateTimeParseException ex){
 						System.out.println("Invalid date string");
 					}

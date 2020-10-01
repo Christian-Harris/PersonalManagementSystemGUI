@@ -1,5 +1,7 @@
 package calendar;
 
+import event.Event;
+import myExceptions.EventAlreadyExistsException;
 import menu.EventBuilderMenu;
 
 import javafx.scene.layout.*;
@@ -30,7 +32,7 @@ public class Calendar extends BorderPane{
 		navBar = new CalendarNavigation(this);
 		current = YearMonth.now();
 		view = current;
-		eventSummary = new Text("\n\nEvents");
+		eventSummary = new Text("\n\nEvents\n");
 		eventSummary.setWrappingWidth(100);
 		
 		events = new ArrayList<Event>();
@@ -51,7 +53,7 @@ public class Calendar extends BorderPane{
 		this.paintCalendar();
 	}
 	
-	private void paintCalendar(){
+	public void paintCalendar(){
 		int year = view.getYear();
 		Month month = view.getMonth();
 		LocalDate firstOfMonth = LocalDate.of(year, month, 1);
@@ -94,6 +96,14 @@ public class Calendar extends BorderPane{
 		this.setTop(navBar);
 	}
 	
+	public void addEvent(Event event){
+		events.add(event);
+	}
+	
+	public ArrayList<Event> getEvents(){
+		return this.events;
+	}
+	
 	class Day extends VBox{
 		private LocalDate date;
 		private ContextMenu contextMenu;
@@ -102,6 +112,11 @@ public class Calendar extends BorderPane{
 		Day(LocalDate date, Calendar calendar){
 			this.date = date;
 			this.getChildren().add(new Label(Integer.toString(date.getDayOfMonth())));
+			for(int i = 0; i < events.size(); i++){
+				if(this.eventIsOn(events.get(i))){
+					this.getChildren().add(new Label(events.get(i).getName()));
+				}
+			}
 			
 			contextMenu = new ContextMenu();
 			newEvent = new MenuItem("New Event");
@@ -145,13 +160,41 @@ public class Calendar extends BorderPane{
 				public void handle(MouseEvent e){
 					if(e.getButton() == MouseButton.SECONDARY){
 						contextMenu.show((Day)e.getSource(), Side.BOTTOM, 0, 0);
-					}						
+					}
+					else if(e.getButton() == MouseButton.PRIMARY){
+						eventSummary.setText("\n\nEvents\n");
+						for(int i = 0; i < events.size(); i++){
+							if(((Day)e.getSource()).eventIsOn(events.get(i))){
+								eventSummary.setText(eventSummary.getText() + events.get(i).summary());
+							}
+						}
+						calendar.paintCalendar();
+					}
 				}
 			});
 		}
-		
-		public LocalDate getDate(){
-			return this.date;
+			
+		public boolean eventIsOn(Event event){
+			if(!event.getRepeats()){
+				if(this.date.compareTo(event.getDate()) == 0){
+					return true;
+				}
+			}
+			else{
+				if(this.date.compareTo(event.getStartDate()) >= 0 && this.date.compareTo(event.getEndDate()) <= 0){
+					int padding = event.getStartDate().getDayOfWeek().getValue();
+					Period period = Period.between(event.getStartDate(), this.date).plusDays(padding);
+					int daysBetween = period.getDays();
+					int weeksBetween = daysBetween / 7;
+					int repetitionWeekLength = event.getRepetitonWeeksLength();
+					int row = weeksBetween % repetitionWeekLength;
+					int column = date.getDayOfWeek().getValue() % 7;
+					if(event.getMaskValue(row, column)){
+						return true;
+					}
+				}				
+			}
+			return false;
 		}
 	}
 	
